@@ -11,8 +11,8 @@ import {
   RECEIVE_RATINGS,
   RECEIVE_GOODS,
   INCREMENT_FOOD_COUNT,
-  DECREMENT_FOOD_COUNT
-
+  DECREMENT_FOOD_COUNT,
+  CLEAN_CART
 } from './mutation-types'
 import {
   reqAddress,
@@ -122,7 +122,11 @@ export default {
     } else{
         commit(DECREMENT_FOOD_COUNT,{food})
     }
-  }
+  },
 
+  //同步清除购物车
+  cleanCart({commit}){
+    commit(CLEAN_CART)
+  }
 }
 

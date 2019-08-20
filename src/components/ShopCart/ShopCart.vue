@@ -18,29 +18,34 @@
           </div>
         </div>
       </div>
-      <div class="shopcart-list" v-show="listShow">
-        <div class="list-header"><h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+      <transition name="move">
+        <div class="shopcart-list" v-show="listShow">
+          <div class="list-header"><h1 class="title">购物车</h1>
+            <span class="empty" @click="cleanCart">清空</span>
+          </div>
+          <div class="list-content">
+            <ul>
+              <li class="food" v-for="(food,index) in shopCart" :key="index">
+                <span class="name">{{food.name}}</span>
+                <div class="price"><span>￥{{food.price}}</span></div>
+                <div class="cartcontrol-wrapper">
+                  <CartControl :food="food"></CartControl>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="list-content">
-          <ul>
-            <li class="food" v-for="(food,index) in shopCart" :key="index">
-              <span class="name">{{food.name}}</span>
-              <div class="price"><span>￥{{food.price}}</span></div>
-              <div class="cartcontrol-wrapper">
-                <CartControl :food="food"></CartControl>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </transition>
     </div>
-    <div class="list-mask" v-show="listShow" @click="toggleShow"></div>
+    <transition name="move">
+      <div class="list-mask" v-show="listShow" @click="toggleShow"></div>
+    </transition>
   </div>
 </template>
 
 <script>
-
+  import Bscroll from 'better-scroll'
+  import {MessageBox} from 'mint-ui'
   import { mapState, mapGetters } from 'vuex'
   import CartControl from '../CartControl/CartControl.vue'
 
@@ -79,15 +84,31 @@
           return false
         }
 
+        if(this.isShow){
+          this.$nextTick(()=>{
+            if(!this.scroll){
+              this.scroll = new Bscroll('.list-content',{
+                click:true
+              })
+            }else {// 后面打开
+              // 通知 scroll 对象
+              this.scroll.refresh()
+            }
+          })
+        }
+
         return this.isShow
       }
     }, methods:{
       toggleShow () {
-        console.log('-----')
         if(this.totalCount) { // 只有有数量时切换
           this.isShow = !this.isShow
         }
-      },
+      },cleanCart(){
+          MessageBox.confirm('你确定清除购物车吗').then(action=>{
+            this.$store.dispatch('cleanCart')
+          },()=>{})
+      }
     }
   }
 </script>
