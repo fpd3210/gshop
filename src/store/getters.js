@@ -14,6 +14,13 @@ export default {
     return state.shopCart.reduce((preTotal,food)=>{
       return preTotal+food.count*food.price
     },0)
+  },
+
+  //计算评价满意数量
+  positiveCount(state){
+    return state.ratings.reduce((preTotal,rating)=>{
+      return preTotal+(rating.rateType===0?1:0)
+    },0)
   }
 
 }

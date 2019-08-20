@@ -100,7 +100,8 @@ export default {
     if(result.code===0) {
       const ratings = result.data
       commit(RECEIVE_RATINGS, {ratings})
-      //cb && cb()
+      //通知回调函数执行
+      cb && cb()
     }
   },
 
