@@ -15,7 +15,8 @@ import {
   RECEIVE_GOODS,
   INCREMENT_FOOD_COUNT,
   DECREMENT_FOOD_COUNT,
-  CLEAN_CART
+  CLEAN_CART,
+  RECEIVE_SEARCH_SHOPS
 } from './mutation-types'
 
 export default {
@@ -69,5 +70,9 @@ export default {
     })
     //清除shopCart
     state.shopCart = []
+  },
+
+  [RECEIVE_SEARCH_SHOPS](state, {searchShops}) {
+    state.searchShops = searchShops
   },
 }
